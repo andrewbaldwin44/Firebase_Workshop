@@ -23,6 +23,22 @@ const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
+function createUserWithEmail(email, password) {
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .catch(error => {
+      console.log(error.message);
+  });
+}
+
+function signInWithEmail(email, password) {
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .catch(error => {
+      console.log(error.message);
+  });
+}
+
+
+
 const AppProvider = ({ children, signInWithGoogle, signOut, user }) => {
   const [appUser, setAppUser] = useState({});
   const [message, setMessage] = useState('');
@@ -43,6 +59,7 @@ const AppProvider = ({ children, signInWithGoogle, signOut, user }) => {
           displayName: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
+          amountDue: '$15'
         }),
       })
       .then(response => response.json())
@@ -58,6 +75,8 @@ const AppProvider = ({ children, signInWithGoogle, signOut, user }) => {
       value={{
         appUser,
         signInWithGoogle,
+        createUserWithEmail,
+        signInWithEmail,
         handleSignOut,
         message,
       }}

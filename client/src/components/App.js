@@ -1,58 +1,26 @@
 import React, { useContext, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
-import Avatar from './Avatar';
 
-import { AppContext } from './AppContext';
+import Homepage from './Homepage';
+import Email from './Email';
 
 const App = () => {
-  const {
-    appUser,
-    signInWithGoogle,
-    handleSignOut,
-    message,
-  } = useContext(AppContext);
-
   return (
-    <StyledPageWrapper>
-      <StyledHeader>
-        {appUser && appUser.email ? (
-          <StyledUserContainer>
-              <Avatar src={appUser.photoURL} />
-              <p>
-                  {appUser.displayName} ({appUser.email})
-              </p>
-              <button onClick={handleSignOut}>Sign Out</button>
-          </StyledUserContainer>
-        ) : (
-          <button onClick={signInWithGoogle}>Sign In</button>
-        )}
-      </StyledHeader>
-      <StyledContainer>{message}</StyledContainer>
-    </StyledPageWrapper>
+    <Router>
+        <Switch>
+            <Route exact path='/'>
+                <Homepage />
+            </Route>
+            <Route exact path='/createaccount'>
+                <Email created={false} />
+            </Route>
+            <Route exact path='/login'>
+                <Email created={true} />
+            </Route>
+        </Switch>
+    </Router>
   );
 };
-
-const StyledPageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledHeader = styled.nav`
-  background: #eaeaea;
-  padding: 6px 14px;
-  min-height: 48px;
-`;
-
-const StyledUserContainer = styled.div`
-  display: flex;
-  align-items: center;
-  height: 50px;
-`;
-
-const StyledContainer = styled.div`
-  background: #fafafa;
-  min-height: 400px;
-  padding: 14px;
-`;
 
 export default App;
